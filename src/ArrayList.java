@@ -305,6 +305,114 @@ public E[] convertirArreglo() {
     }
 
 
+    //AGREGAMOS MAS METODOS
+
+    @Override
+    public int BusquedaLineal( E e){
+        if(esVacia()){
+            throw new java.util.NoSuchElementException("La lista esta vacia");
+        }else {
+            for (int i = 0; i < this.indice; i++) {
+                if (datos[i].equals(e)) {
+                    return i;
+                }
+            }
+            return -1; // Elemento no encontrado
+        }
+    }
+
+
+    @Override
+        public int busquedaLinealRecursiva(E e) {
+            return busquedaLinealRecursiva(e, 0);
+        }
+
+        private int busquedaLinealRecursiva(E e, int posicion) {
+            if (posicion >= indice) {
+                return -1; // Elemento no encontrado
+            }
+            if (datos[posicion].equals(e)) {
+                return posicion; // Elemento encontrado
+            }
+            return busquedaLinealRecursiva(e, posicion + 1); // Llamada recursiva
+        }
+    
+
+
+    @Override
+    public int BusquedaBinaria (E e) {
+        
+        if (esVacia()) {
+            throw new java.util.NoSuchElementException("La lista está vacía");
+        }
+
+        int inicio = 0;
+        int fin = indice - 1;
+
+        while (inicio <= fin) {
+            int medio = inicio + (fin - inicio) / 2;
+
+            @SuppressWarnings("unchecked")
+            Comparable<E> elementoMedio = (Comparable<E>) datos[medio];
+
+            int comparacion = elementoMedio.compareTo(e);
+
+            if (comparacion == 0) {
+                return medio; // Elemento encontrado
+            } else if (comparacion < 0) {
+                inicio = medio + 1; // Buscar en la mitad derecha
+            } else {
+                fin = medio - 1; // Buscar en la mitad izquierda
+            }
+        }
+
+        return -1; // Elemento no encontrado
+
+    }
+
+    public void ordenarPorInsercion() {
+        for (int i = 1; i < indice; i++) {
+            @SuppressWarnings("unchecked")
+            Comparable<E> elementoActual = (Comparable<E>) datos[i];
+            int j = i - 1;
+
+            // Mueve los elementos mayores que elementoActual hacia la derecha
+            while (j >= 0 && ((Comparable<E>) datos[j]).compareTo((E) elementoActual) > 0) {
+                datos[j + 1] = datos[j];
+                j--;
+            }
+            datos[j + 1] = elementoActual;
+        }
+    }
+
+    public void ordenaMerge(){
+        
+        if (indice < 2) {
+            return; // La lista ya está ordenada
+        }
+
+        // Dividir la lista en dos mitades
+        int mid = indice / 2;
+        ArrayList<E> left = new ArrayList<>(mid);
+        ArrayList<E> right = new ArrayList<>(indice - mid);
+
+        for (int i = 0; i < mid; i++) {
+            left.agregarFinal((E) datos[i]);
+        }
+        for (int i = mid; i < indice; i++) {
+            right.agregarFinal((E) datos[i]);
+        }
+
+        // Ordenar recursivamente las dos mitades
+        left.ordenaMerge();
+        right.ordenaMerge();
+
+        // Combinar las dos mitades ordenadas
+        merge(left, right);
+    }
+
+
+
 
     //Un Iterator : Permite recorrer la lista usando un Iterator.
         // Un Iterator es un objeto que permite recorrer una colección

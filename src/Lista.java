@@ -68,5 +68,23 @@ public interface Lista<E> extends Iterable<E> {
 	 * @param posicion Posicion del elemento a regresar
 	 */
 	public E consultar(int posicion);
+
+
+
+
+
+
+	//ordenar lista por inserccion y nerdsquks AGREGAR
+
+	public int BusquedaLineal(E elemento);
+
+	public int BusquedaLinealRecursiva(E e);
+
+	public int BusquedaBinaria(E elemento);
+
+	public void ordenaInserccion();
+
+	public void ordenaMerge();
+
 	
 }
