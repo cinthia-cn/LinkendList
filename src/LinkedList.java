@@ -225,6 +225,153 @@ public class LinkedList<E> implements Lista<E> {
 		}
 		return iterador.getInfo();
 	}
+
+	// Recorre nodo por nodo comparando con equals() hasta encontrar el elemento.
+    // A diferencia de un arreglo, aqui no hay acceso directo por indice,
+    // por lo que hay que avanzar nodo a nodo contando la posicion.
+    @Override
+    public int BusquedaLineal(E elemento) {
+        if (esVacia()) {
+            throw new java.util.NoSuchElementException("La lista esta vacia");
+        }
+        Nodo iterador = primero;
+        int posicion = 0;
+        while (iterador != null) {
+            if (iterador.getInfo().equals(elemento)) {
+                return posicion;
+            }
+            iterador = iterador.getSiguiente();
+            posicion++;
+        }
+        return -1; // Elemento no encontrado
+    }
+
+    // Version recursiva: en vez de un indice numerico usamos el propio
+    // nodo como "puntero" que avanza en cada llamada.
+    @Override
+    public int BusquedaLinealRecursiva(E e) {
+        return busquedaLinealRecursivaAux(e, primero, 0);
+    }
+
+    private int busquedaLinealRecursivaAux(E e, Nodo nodo, int posicion) {
+        if (nodo == null) {
+            return -1; // Elemento no encontrado
+        }
+        if (nodo.getInfo().equals(e)) {
+            return posicion;
+        }
+        return busquedaLinealRecursivaAux(e, nodo.getSiguiente(), posicion + 1);
+    }
+
+    // La busqueda binaria clasica necesita acceso directo a la mitad del
+    // arreglo (datos[medio]) en O(1). En una lista ligada eso no existe:
+    // llegar a una posicion siempre cuesta recorrer nodo por nodo, es
+    // decir O(n). Por eso reutilizamos consultar(medio), que ya hace ese
+    // recorrido. Sigue funcionando (la lista debe estar ordenada), solo
+    // que no tiene la ventaja de velocidad que sí tiene en ArrayList.
+    @SuppressWarnings("unchecked")
+    @Override
+    public int BusquedaBinaria(E elemento) {
+        if (esVacia()) {
+            throw new java.util.NoSuchElementException("La lista esta vacia");
+        }
+
+        int inicio = 0;
+        int fin = tamanio - 1;
+
+        while (inicio <= fin) {
+            int medio = inicio + (fin - inicio) / 2;
+            Comparable<E> elementoMedio = (Comparable<E>) consultar(medio);
+            int comparacion = elementoMedio.compareTo(elemento);
+
+            if (comparacion == 0) {
+                return medio;
+            } else if (comparacion < 0) {
+                inicio = medio + 1;
+            } else {
+                fin = medio - 1;
+            }
+        }
+        return -1; // Elemento no encontrado
+    }
+
+	    // Para ordenar reutilizamos convertirArreglo(): sacamos todos los
+    // valores a un Object[], los ordenamos ahi (donde SI hay acceso
+    // directo por indice, igual que en ArrayList) y despues los volvemos
+    // a escribir en los nodos en el mismo orden. Es mas simple y menos
+    // propenso a errores que mover los nodos (los "siguiente") a mano.
+    @SuppressWarnings("unchecked")
+    @Override
+    public void ordenarInsercion() {
+        Object[] valores = convertirArreglo();
+
+        for (int i = 1; i < valores.length; i++) {
+            Comparable<E> actual = (Comparable<E>) valores[i];
+            int j = i - 1;
+            while (j >= 0 && ((Comparable<E>) valores[j]).compareTo((E) actual) > 0) {
+                valores[j + 1] = valores[j];
+                j--;
+            }
+            valores[j + 1] = actual;
+        }
+
+        escribirDesdeArreglo(valores);
+    }
+
+	 @SuppressWarnings("unchecked")
+    @Override
+    public void ordenaMerge() {
+        Object[] valores = convertirArreglo();
+        mergeSort(valores, 0, valores.length - 1);
+        escribirDesdeArreglo(valores);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void mergeSort(Object[] valores, int izquierda, int derecha) {
+        if (izquierda >= derecha) {
+            return;
+        }
+        int medio = izquierda + (derecha - izquierda) / 2;
+        mergeSort(valores, izquierda, medio);
+        mergeSort(valores, medio + 1, derecha);
+
+        Object[] temporal = new Object[derecha - izquierda + 1];
+        int i = izquierda, j = medio + 1, k = 0;
+
+        while (i <= medio && j <= derecha) {
+            Comparable<E> a = (Comparable<E>) valores[i];
+            E b = (E) valores[j];
+            if (a.compareTo(b) <= 0) {
+                temporal[k++] = valores[i++];
+            } else {
+                temporal[k++] = valores[j++];
+            }
+        }
+        while (i <= medio) {
+            temporal[k++] = valores[i++];
+        }
+        while (j <= derecha) {
+            temporal[k++] = valores[j++];
+        }
+
+        System.arraycopy(temporal, 0, valores, izquierda, temporal.length);
+    }
+
+    // Recorre los nodos existentes en orden y les pone el valor que
+    // corresponde segun el arreglo ya ordenado. Como el numero de nodos
+    // no cambia, solo estamos reemplazando el "info" de cada uno.
+    @SuppressWarnings("unchecked")
+    private void escribirDesdeArreglo(Object[] valores) {
+        Nodo iterador = primero;
+        int i = 0;
+        while (iterador != null) {
+            iterador.setInfo((E) valores[i]);
+            iterador = iterador.getSiguiente();
+            i++;
+        }
+    }
+
+
     @Override
     public Iterator<E> iterator() { //METODO ANONIMO QUE DEVUELVE UN ITERADOR PARA RECORRER LA LISTA.
         return new Iterator<E>(){

@@ -82,7 +82,7 @@ public interface Lista<E> extends Iterable<E> {
 
 	public int BusquedaBinaria(E elemento);
 
-	public void ordenaInserccion();
+	public void ordenarInsercion();
 
 	public void ordenaMerge();
 

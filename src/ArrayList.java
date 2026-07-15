@@ -323,7 +323,7 @@ public E[] convertirArreglo() {
 
 
     @Override
-        public int busquedaLinealRecursiva(E e) {
+        public int BusquedaLinealRecursiva(E e) {
             return busquedaLinealRecursiva(e, 0);
         }
 
@@ -370,7 +370,7 @@ public E[] convertirArreglo() {
 
     }
 
-    public void ordenarPorInsercion() {
+    public void ordenarInsercion() {
         for (int i = 1; i < indice; i++) {
             @SuppressWarnings("unchecked")
             Comparable<E> elementoActual = (Comparable<E>) datos[i];
@@ -409,6 +409,34 @@ public E[] convertirArreglo() {
 
         // Combinar las dos mitades ordenadas
         merge(left, right);
+    }
+
+    // Combina dos ArrayList ya ordenados (left y right) dentro
+    // del arreglo "datos" de esta lista, en orden ascendente.
+    // Esta es la parte "merge" clasica de mergesort: se van comparando
+    // los elementos al frente de cada mitad y se copia el menor.
+    @SuppressWarnings("unchecked")
+    private void merge(ArrayList<E> left, ArrayList<E> right) {
+        int i = 0, j = 0, k = 0;
+
+        while (i < left.indice && j < right.indice) {
+            Comparable<E> actualIzquierda = (Comparable<E>) left.datos[i];
+            E actualDerecha = (E) right.datos[j];
+
+            if (actualIzquierda.compareTo(actualDerecha) <= 0) {
+                datos[k++] = left.datos[i++];
+            } else {
+                datos[k++] = right.datos[j++];
+            }
+        }
+
+        // Copia lo que haya quedado sin comparar en cada mitad.
+        while (i < left.indice) {
+            datos[k++] = left.datos[i++];
+        }
+        while (j < right.indice) {
+            datos[k++] = right.datos[j++];
+        }
     }
 
 

@@ -1,15 +1,6 @@
 public class PruebaColecciones {
 
     public static void main(String[] args) {
-
-
-
-
-
-
-
-
-
         //==========================================================
         // PILA IMPLEMENTADA CON ARRAYLIST
         //==========================================================
@@ -41,9 +32,8 @@ public class PruebaColecciones {
 // Este principio se conoce como "programar contra la interfaz y
 // no contra la implementación", ya que la interfaz controla qué
 // operaciones están disponibles para el usuario.
-         */
-        Pila<Integer> pilaArray =
-                new PilaLista<>(new ArrayList<Integer>());
+         
+        Pila<Integer> pilaArray = new PilaArray<>();
 
         pilaArray.apilar(10);
         pilaArray.apilar(20);
@@ -71,18 +61,18 @@ public class PruebaColecciones {
         // PILA IMPLEMENTADA CON LINKEDLIST
         //==========================================================
 
-//        System.out.println("\n===== PILA CON LINKEDLIST =====");
+        System.out.println("\n===== PILA CON LINKEDLIST =====");
 
         /*
          * Observe que únicamente cambiamos la implementación interna.
-         *
+         *(pilaArray a pilaLinked)
          * El resto del código permanece exactamente igual.
          *
          * Esto demuestra que programamos utilizando la interfaz Pila
-         * y no una implementación específica.
+         * y no una implementación específica. 
+         * PQ AMBAS CUMPLEN CON LA INTERFAZ PILA
          */
-  /*     Pila<Integer> pilaLinked =
-                new PilaLista<>(new LinkedList<Integer>());
+      Pila<Integer> pilaLinked = new PilaLinked<>();
 
         pilaLinked.apilar(100);
         pilaLinked.apilar(200);
@@ -109,8 +99,7 @@ public class PruebaColecciones {
          * Aunque internamente utilice una Lista, únicamente estarán
          * disponibles las operaciones propias de una cola.
          */
-     /*   Cola<String> colaArray =
-                new ColaLista<>(new ArrayList<String>());
+        Cola<String> colaArray = new ColaArray<>();
 
         colaArray.encolar("Ana");
         colaArray.encolar("Luis");
@@ -138,14 +127,13 @@ public class PruebaColecciones {
         // COLA IMPLEMENTADA CON LINKEDLIST
         //==========================================================
 
-       /*  System.out.println("\n===== COLA CON LINKEDLIST =====");
+        System.out.println("\n===== COLA CON LINKEDLIST =====");
 
         /*
          * Nuevamente únicamente cambiamos la implementación interna.
          * Todo el código que utiliza la cola permanece igual.
          */
-        /*Cola<String> colaLinked =
-                new ColaLista<>(new LinkedList<String>());
+        Cola<String> colaLinked = new ColaLinked<>();
 
         colaLinked.encolar("María");
         colaLinked.encolar("José");

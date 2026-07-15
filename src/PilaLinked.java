@@ -1,3 +1,5 @@
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 public class PilaLinked <E> implements Pila<E> {
 
     private final Lista<E> elementos;
@@ -5,7 +7,8 @@ public class PilaLinked <E> implements Pila<E> {
     public PilaLinked() {
         elementos = new LinkedList<>();
     } //LO UNICO QEU DIFIERE ES COMO SE ARMA LA LISTA... AQUI ES LINKED Y EL OTRO UN ARRAYLIS, 
-    // ES LO UNICO EN LO QUE DIFIERE.(UNA LINEA DE COGISO, TODO LO DEMAS ES UNA GENERALIZACION DE LA INTERFAZ PILA, QUE ES LO QUE SE ESTA IMPLEMENTANDO).
+    // ES LO UNICO EN LO QUE DIFIERE.(UNA LINEA DE COGISO, 
+    // TODO LO DEMAS ES UNA GENERALIZACION DE LA INTERFAZ PILA, QUE ES LO QUE SE ESTA IMPLEMENTANDO).
     //EN LAS VENTAJS Y DESVENTAJAS DEPENDE DE QUE SE NECESITE. ARAYLISTA TODAS ESTAN CONTINUAS, PERO CUANDO CRECE 
     // EL SISTEMA TIENE QUE REASIGNAR TODA LA MEMORIA,
     //  EN LINKEDLIST NO, PERO SIEMPRE OCUPA MAS MEMORIA PORQUE 
@@ -60,7 +63,7 @@ public class PilaLinked <E> implements Pila<E> {
 
     @Override
     public void limpiar() {
-        return elementos.limpiarLista();
+        elementos.limpiarLista();
     }
 
     @Override
